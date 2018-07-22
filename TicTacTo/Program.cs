@@ -19,16 +19,23 @@ namespace TicTacTo
                 DrawGame(arrTicTacTo);
                 while (!gameOver)
                 {
-                    Console.WriteLine("Player {0} enter a number: ", iPlayer);
+                    Console.WriteLine("Player {0} choose a field: ", iPlayer);
                     string stInput = Console.ReadLine();
                     bool convert = int.TryParse(stInput, out int indexPlayer);
                     if (convert && indexPlayer < 10 && indexPlayer > 0)
                     {
-                        string stPlayer = (iPlayer == 1) ? "X" : "O"; //Player 1 is X
-                        arrTicTacTo[indexPlayer - 1] = stPlayer;
-                        DrawGame(arrTicTacTo);
-                        gameOver = CheckWin(arrTicTacTo, stPlayer);
-                        iPlayer = iPlayer==1?2:1;
+                        if (arrTicTacTo[indexPlayer - 1]=="X" || arrTicTacTo[indexPlayer - 1] == "O")
+                        {
+                            Console.WriteLine("Field {0} is already busy.", indexPlayer);
+                        }
+                        else
+                        {
+                            string stPlayer = (iPlayer == 1) ? "X" : "O"; //Player 1 is X
+                            arrTicTacTo[indexPlayer - 1] = stPlayer;
+                            DrawGame(arrTicTacTo);
+                            gameOver = CheckWin(arrTicTacTo, stPlayer);
+                            iPlayer = iPlayer == 1 ? 2 : 1;
+                        } 
                     }
                     else
                     {
@@ -59,6 +66,16 @@ namespace TicTacTo
             }
             else
             {
+                int iField=0;
+                foreach (var item in arr)
+                {
+                    iField = (item == "X" || item == "O") ? iField + 1 : iField;
+                }
+                if (iField == arr.Length)
+                {
+                    Console.WriteLine("Game over");
+                    return true;
+                }
                 return false;
             }
         }
